@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'newsapi' => [
+        'key' => env('NEWSAPI_KEY'),
+    ],
+
+    'openai' => [
+        'api_key' => env('OPENAI_API_KEY'),
+    ],
+
 ];
