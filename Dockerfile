@@ -29,20 +29,28 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy the entire application
+# Copy composer files first
+COPY composer.json composer.lock ./
+
+# Install Composer dependencies
+RUN composer install --no-scripts --no-autoloader --no-dev --prefer-dist
+
+# Copy the rest of the application
 COPY . .
 
-# Install dependencies and build assets
-RUN composer install --no-interaction --no-dev --prefer-dist \
-    && npm ci \
-    && npm run build
+# Generate optimized autoloader and run scripts
+RUN composer dump-autoload --optimize && composer run-script post-autoload-dump
+
+# Install and build frontend assets
+RUN npm ci && npm run build
 
 # Create storage directory structure and set permissions
 RUN mkdir -p storage/framework/{sessions,views,cache} \
     && chmod -R 775 storage \
     && chown -R www-data:www-data storage \
     && chown -R www-data:www-data bootstrap/cache \
-    && chown -R www-data:www-data public
+    && chown -R www-data:www-data public \
+    && chown -R www-data:www-data vendor
 
 # Copy and set permissions for the entrypoint script
 COPY docker/entrypoint.sh /usr/local/bin/
