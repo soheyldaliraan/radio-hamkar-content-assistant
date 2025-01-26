@@ -46,15 +46,19 @@ RUN npm ci && npm run build
 
 # Create storage directory structure and set permissions
 RUN mkdir -p storage/framework/{sessions,views,cache} \
-    && chmod -R 775 storage \
-    && chown -R www-data:www-data storage \
-    && chown -R www-data:www-data bootstrap/cache \
-    && chown -R www-data:www-data public \
-    && chown -R www-data:www-data vendor
+    && mkdir -p bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage \
+    && chmod -R 775 /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/public \
+    && find /var/www/html/storage -type f -exec chmod 664 {} \; \
+    && find /var/www/html/storage -type d -exec chmod 775 {} \;
 
-# Copy and set permissions for the entrypoint script
+# Copy and set permissions for the scripts
 COPY docker/entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/entrypoint.sh
+COPY docker/init-storage.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh \
+    && chmod +x /usr/local/bin/init-storage.sh
 
 # Copy supervisor configuration
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf

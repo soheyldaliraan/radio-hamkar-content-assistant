@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Initialize storage permissions
+/usr/local/bin/init-storage.sh
+
 # Wait for MySQL to be ready
 echo "Waiting for MySQL to be ready..."
 max_tries=30
