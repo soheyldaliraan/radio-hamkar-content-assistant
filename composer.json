@@ -11,6 +11,7 @@
         "laravel/breeze": "^2.3",
         "laravel/fortify": "^1.25",
         "laravel/framework": "^11.31",
+        "laravel/sanctum": "^4.0",
         "laravel/telescope": "^5.3",
         "laravel/tinker": "^2.9",
         "openai-php/laravel": "^0.10.2"
