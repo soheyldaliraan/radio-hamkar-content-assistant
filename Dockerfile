@@ -29,7 +29,13 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy composer files first
+# Copy package files first
+COPY package*.json vite.config.js tailwind.config.js ./
+
+# Install npm dependencies
+RUN npm ci
+
+# Copy composer files
 COPY composer.json composer.lock ./
 
 # Install Composer dependencies
@@ -41,8 +47,8 @@ COPY . .
 # Generate optimized autoloader and run scripts
 RUN composer dump-autoload --optimize && composer run-script post-autoload-dump
 
-# Install and build frontend assets
-RUN npm ci && npm run build
+# Build frontend assets
+RUN npm run build
 
 # Create storage directory structure and set permissions
 RUN mkdir -p storage/framework/{sessions,views,cache} \

@@ -3,6 +3,11 @@
 # Initialize storage permissions
 /usr/local/bin/init-storage.sh
 
+# Ensure build directory exists and has proper permissions
+mkdir -p /var/www/html/public/build
+chown -R www-data:www-data /var/www/html/public/build
+chmod -R 775 /var/www/html/public/build
+
 # Wait for MySQL to be ready
 echo "Waiting for MySQL to be ready..."
 max_tries=30
