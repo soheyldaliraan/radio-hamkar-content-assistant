@@ -1,11 +1,9 @@
-# Radio Hamkar Content Curation
+<p align="center">
+  <img src="public/images/logo-splash.gif" alt="Radio Hamkar Content Curation" width="100%">
+</p>
 
-> [!IMPORTANT]
-> 🚧 **Active Development Notice** 🚧
-> 
-> This project is under active development. Features and documentation may change frequently.
-> We welcome feedback and contributions to help improve the project.
-> Check the [Current Limitations](#current-limitations) and [Planned Improvements](#-planned-improvements) sections to see what's coming next.
+# Radio Hamkar Content Assistant
+
 
 An automated content curation system for Radio Hamkar that fetches, analyzes, and processes workplace-related news articles using AI.
 
@@ -16,6 +14,13 @@ An automated content curation system for Radio Hamkar that fetches, analyzes, an
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.x-38B2AC?style=flat-square&logo=tailwind-css)
 ![Alpine.js](https://img.shields.io/badge/Alpine.js-3.x-8BC0D0?style=flat-square&logo=alpine.js)
 ![OpenAI](https://img.shields.io/badge/OpenAI-API-412991?style=flat-square&logo=openai)
+
+> [!IMPORTANT]
+> 🚧 **Active Development Notice** 🚧
+> 
+> This project is under active development. Features and documentation may change frequently.
+> We welcome feedback and contributions to help improve the project.
+> Check the [Current Limitations](#current-limitations) and [Planned Improvements](#-planned-improvements) sections to see what's coming next.
 
 ## 🚀 Features
 
