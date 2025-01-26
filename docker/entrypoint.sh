@@ -8,6 +8,21 @@ mkdir -p /var/www/html/public/build
 chown -R www-data:www-data /var/www/html/public/build
 chmod -R 775 /var/www/html/public/build
 
+# Create storage structure and set permissions
+mkdir -p /var/www/html/storage/app/public
+mkdir -p /var/www/html/storage/framework/{sessions,views,cache}
+mkdir -p /var/www/html/storage/logs
+mkdir -p /var/www/html/public/storage
+
+# Set proper permissions
+chown -R www-data:www-data /var/www/html/storage
+chown -R www-data:www-data /var/www/html/public/storage
+chmod -R 775 /var/www/html/storage
+chmod -R 775 /var/www/html/public/storage
+
+# Create storage link if it doesn't exist
+php artisan storage:link
+
 # Wait for MySQL to be ready
 echo "Waiting for MySQL to be ready..."
 max_tries=30
@@ -22,10 +37,6 @@ while ! mysql -h mysql -u"${DB_USERNAME}" -p"${DB_PASSWORD}" -e "SELECT 1" >/dev
     sleep 2
 done
 echo "MySQL is ready!"
-
-# Create storage directory structure
-mkdir -p /var/www/html/storage/framework/{sessions,views,cache}
-chmod -R 775 /var/www/html/storage
 
 # Run migrations and create session table
 echo "Running migrations..."
