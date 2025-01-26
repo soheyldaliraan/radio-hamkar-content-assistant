@@ -25,6 +25,7 @@ An automated content curation system for Radio Hamkar that fetches, analyzes, an
 - DALL·E image generation for each article
 - Content approval workflow
 - Scheduled content updates
+- User management with admin capabilities
 
 ## 🛠 Tech Stack
 
@@ -96,6 +97,15 @@ An automated content curation system for Radio Hamkar that fetches, analyzes, an
 6. Run migrations:
    ```bash
    docker-compose exec php-fpm php artisan migrate
+   ```
+
+7. Create your first admin user:
+   ```bash
+   # Interactive mode
+   docker-compose exec php-fpm php artisan user:create
+
+   # Non-interactive mode
+   docker-compose exec php-fpm php artisan user:create --name="Admin User" --email="admin@example.com" --password="your-password" --admin
    ```
 
 ## 🔄 Scheduled Jobs
@@ -381,3 +391,43 @@ Remember to:
 - Update documentation to reflect your changes
 - Maintain security best practices
 - Keep track of upstream updates
+
+## 👥 User Management
+
+The application includes a command-line tool for managing users. Here's how to use it:
+
+### Creating Users
+
+You can create users in two ways:
+
+1. **Interactive Mode**
+   ```bash
+   docker-compose exec php-fpm php artisan user:create
+   ```
+   This will prompt you for:
+   - User's name
+   - Email address
+   - Password
+   - Admin status
+
+2. **Non-interactive Mode**
+   ```bash
+   docker-compose exec php-fpm php artisan user:create \
+       --name="John Doe" \
+       --email="john@example.com" \
+       --password="secure-password" \
+       --admin
+   ```
+
+### Command Options
+- `--name`: User's full name
+- `--email`: User's email address
+- `--password`: User's password (must meet Laravel's password requirements)
+- `--admin`: Flag to create an admin user (optional)
+
+### Password Requirements
+Passwords must:
+- Be at least 8 characters long
+- Contain at least one uppercase letter
+- Contain at least one number
+- Contain at least one special character
