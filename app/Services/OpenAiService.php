@@ -74,14 +74,14 @@ class OpenAiService
         $filename = 'articles/' . date('Y/m/') . Str::random(40) . '.png';
         
         // Create directory if it doesn't exist
-        $directory = storage_path('app/public/' . dirname($filename));
+        $directory = public_path('storage/' . dirname($filename));
         if (!file_exists($directory)) {
             mkdir($directory, 0755, true);
         }
         
-        // Download and save the image
+        // Download and save the image directly to public/storage
         $imageContents = file_get_contents($imageUrl);
-        Storage::disk('public')->put($filename, $imageContents);
+        file_put_contents(public_path('storage/' . $filename), $imageContents);
         
         return $filename;
     }
