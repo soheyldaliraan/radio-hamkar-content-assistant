@@ -10,7 +10,11 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     supervisor \
-    default-mysql-client
+    default-mysql-client \
+    cron
+
+# Add Laravel scheduler cron job
+RUN echo "* * * * * cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1" | crontab -u www-data -
 
 # Install Node.js and npm
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
