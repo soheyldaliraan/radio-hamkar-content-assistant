@@ -26,23 +26,23 @@ class CreateUserCommand extends Command
         $password = $this->option('password') ?: $this->secret('What is the user\'s password?');
         $isAdmin = $this->option('admin') ?: $this->confirm('Should this user be an admin?', false);
 
-        // Validate input
-        $validator = Validator::make([
-            'name' => $name,
-            'email' => $email,
-            'password' => $password,
-        ], [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', Password::defaults()],
-        ]);
+            // Validate input
+            $validator = Validator::make([
+                'name' => $name,
+                'email' => $email,
+                'password' => $password,
+            ], [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => ['required', Password::defaults()],
+            ]);
 
-        if ($validator->fails()) {
-            foreach ($validator->errors()->all() as $error) {
-                $this->error($error);
+            if ($validator->fails()) {
+                foreach ($validator->errors()->all() as $error) {
+                    $this->error($error);
+                }
+                return Command::FAILURE;
             }
-            return Command::FAILURE;
-        }
 
         try {
             // Create the user

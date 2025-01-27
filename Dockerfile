@@ -9,12 +9,13 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     unzip \
-    supervisor \
     default-mysql-client \
     cron
 
 # Add Laravel scheduler cron job
-RUN echo "* * * * * cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1" | crontab -u www-data -
+RUN echo "* * * * * cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1" > /etc/cron.d/laravel-scheduler \
+    && chmod 0644 /etc/cron.d/laravel-scheduler \
+    && crontab /etc/cron.d/laravel-scheduler
 
 # Install Node.js and npm
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
@@ -42,8 +43,8 @@ RUN npm ci
 # Copy composer files
 COPY composer.json composer.lock ./
 
-# Install Composer dependencies
-RUN composer install --no-scripts --no-autoloader --no-dev --prefer-dist
+# Install Composer dependencies (including dev)
+RUN composer install --no-scripts --no-autoloader --prefer-dist
 
 # Copy the rest of the application
 COPY . .
@@ -69,15 +70,6 @@ COPY docker/entrypoint.sh /usr/local/bin/
 COPY docker/init-storage.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh \
     && chmod +x /usr/local/bin/init-storage.sh
-
-# Create supervisor directories and set permissions
-RUN mkdir -p /var/log/supervisor \
-    && mkdir -p /var/run \
-    && chmod 777 /var/run \
-    && chown -R www-data:www-data /var/log/supervisor
-
-# Copy supervisor configuration
-COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Set the entrypoint
 ENTRYPOINT ["entrypoint.sh"] 

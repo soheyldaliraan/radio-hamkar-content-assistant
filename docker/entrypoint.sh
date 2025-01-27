@@ -47,6 +47,10 @@ php artisan cache:clear
 php artisan config:clear
 php artisan view:clear
 
-# Start supervisor to manage PHP-FPM and scheduler
-echo "Starting supervisor..."
-supervisord -c /etc/supervisor/conf.d/supervisord.conf 
+# Start Laravel scheduler in the background
+echo "Starting Laravel scheduler..."
+php artisan schedule:work &
+
+# Start PHP-FPM in the foreground
+echo "Starting PHP-FPM..."
+exec php-fpm 
