@@ -66,6 +66,12 @@ COPY docker/init-storage.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh \
     && chmod +x /usr/local/bin/init-storage.sh
 
+# Create supervisor directories and set permissions
+RUN mkdir -p /var/log/supervisor \
+    && mkdir -p /var/run \
+    && chmod 777 /var/run \
+    && chown -R www-data:www-data /var/log/supervisor
+
 # Copy supervisor configuration
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 

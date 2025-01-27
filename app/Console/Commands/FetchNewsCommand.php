@@ -90,9 +90,9 @@ class FetchNewsCommand extends Command
                         $article['description'] . "\n" . ($article['content'] ?? '')
                     );
                     
-                    // Skip if relevance score is less than 8
+                    // Skip if relevance score is less than 6
                     if ($analysis['relevance_score'] < 6) {
-                        $this->warn(sprintf('Relevance score is less than 8 for article (ID: %s, Title: %s), skipping...', $article['url'], $article['title']));
+                        $this->warn(sprintf('Relevance score is less than 6 for article (ID: %s, Title: %s), skipping...', $article['url'], $article['title']));
                         continue;
                     }
                     
