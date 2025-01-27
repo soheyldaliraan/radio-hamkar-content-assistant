@@ -22,7 +22,7 @@ Schedule::command('schedule:test')
 
 // Main application schedules
 Schedule::command('news:fetch')
-    ->cron('0 * * * *')
+    ->cron('0 */2 * * *')
     ->withoutOverlapping()
     ->appendOutputTo(storage_path('logs/schedule-news-fetch.log'));
 
