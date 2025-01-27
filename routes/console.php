@@ -9,7 +9,7 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 Schedule::command('news:fetch')
-            ->hourly()
+            ->everyMinute()
             ->withoutOverlapping()
             ->appendOutputTo(storage_path('logs/schedule-news-fetch.log'));
 
