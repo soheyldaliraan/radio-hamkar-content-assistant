@@ -24,6 +24,47 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
         Telescope::filter(function (IncomingEntry $entry) {
             return true;
         });
+
+        // Add custom tag for news-related events
+        Telescope::tag(function (IncomingEntry $entry) {
+            if ($this->isNewsRelatedEntry($entry)) {
+                return ['news'];
+            }
+
+            return [];
+        });
+    }
+
+    /**
+     * Check if the entry is related to news functionality.
+     */
+    private function isNewsRelatedEntry(IncomingEntry $entry): bool
+    {
+        $newsPatterns = [
+            'news:fetch',
+            'news:regenerate',
+            'NewsApiService',
+            'NewsArticle',
+            '/news/',
+        ];
+
+        // Check command, job and exception entries
+        if (in_array($entry->type, ['command', 'job', 'exception'])) {
+            $fields = [
+                'command' => 'command',
+                'job' => 'name', 
+                'exception' => 'class'
+            ];
+            return str_contains($entry->content[$fields[$entry->type]] ?? '', $entry->type === 'exception' ? 'News' : 'news');
+        }
+        
+        // Check log entries
+        if ($entry->type === 'log') {
+            $message = $entry->content['message'] ?? '';
+            return collect($newsPatterns)->some(fn($pattern) => str_contains($message, $pattern));
+        }
+
+        return false;
     }
 
     /**

@@ -17,7 +17,7 @@ Artisan::command('schedule:test', function () {
 
 // Schedule the test command to run every minute
 Schedule::command('schedule:test')
-    ->everyMinute()
+    ->everyFifteenMinutes()
     ->appendOutputTo(storage_path('logs/schedule-test.log'));
 
 // Main application schedules
